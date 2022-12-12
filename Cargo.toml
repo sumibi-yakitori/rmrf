@@ -1,0 +1,10 @@
+[package]
+name = "rmrf"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+trash = { version = "3.0", features = ["coinit_speed_over_memory"] }
+# anyhow = { version = "1.0", features = [ "backtrace" ] }
