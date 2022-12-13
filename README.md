@@ -6,6 +6,8 @@
 # rmrf
 
 A simple `rm -rf` command alternative.
+This command moves directories and files to the trash instead of deleting them.
+
 
 ## Install
 
