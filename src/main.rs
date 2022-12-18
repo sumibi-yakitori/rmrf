@@ -1,5 +1,6 @@
 //! A simple `rm -rf` command alternative.
 //! This command moves directories and files to the trash instead of deleting them.
+//! The path passed as an argument can be a file or a folder, and multiple arguments can be passed.
 //!
 //!
 //! # Install
