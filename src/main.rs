@@ -21,10 +21,17 @@ type Result<T = (), E = Box<dyn std::error::Error>> = std::result::Result<T, E>;
 
 fn main() -> Result {
   for path in std::env::args().skip(1) {
-    // The reason for using the `trash::delete` method instead of `trash::delete_all`
-    // is that you can continue if an error occurs.
-    if let Err(e) = trash::delete(path) {
-      eprintln!("{:#?}", e);
+    match std::fs::canonicalize(path) {
+      Ok(path) => {
+        // The reason for using the `trash::delete` method instead of `trash::delete_all`
+        // is that you can continue if an error occurs.
+        if let Err(e) = trash::delete(path) {
+          eprintln!("{:#?}", e);
+        }
+      }
+      Err(e) => {
+        eprintln!("{:#?}", e);
+      }
     }
   }
   Ok(())
