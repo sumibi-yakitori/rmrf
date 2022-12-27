@@ -16,22 +16,50 @@
 //! rmrf <path>
 //! ```
 
+use argh::FromArgs;
+
 // type Result<T = (), E = anyhow::Error> = anyhow::Result<T, E>;
 type Result<T = (), E = Box<dyn std::error::Error>> = std::result::Result<T, E>;
 
+/// rmfm
+#[derive(Debug, FromArgs)]
+struct Cli {
+  /// whether to perform a normal delete operation when the operation to trash a file or folder fails
+  #[argh(switch, short = 'f')]
+  force: bool,
+
+  /// paths
+  #[argh(positional)]
+  paths: Vec<String>,
+}
+
 fn main() -> Result {
-  for path in std::env::args().skip(1) {
+  let cli: Cli = argh::from_env();
+
+  for path in cli.paths {
     match std::fs::canonicalize(path) {
       Ok(path) => {
         // The reason for using the `trash::delete` method instead of `trash::delete_all`
         // is that you can continue if an error occurs.
-        if let Err(e) = trash::delete(path) {
-          eprintln!("{:#?}", e);
+        if let Err(e) = trash::delete(&path) {
+          if cli.force {
+            if path.is_file() {
+              if let Err(e) = std::fs::remove_file(path) {
+                eprintln!("{:#?}", e);
+              }
+            }
+            else if path.is_dir() {
+              if let Err(e) = std::fs::remove_dir_all(path) {
+                eprintln!("{:#?}", e);
+              }
+            }
+          }
+          else {
+            eprintln!("{:#?}", e);
+          }
         }
       }
-      Err(e) => {
-        eprintln!("{:#?}", e);
-      }
+      Err(e) => eprintln!("{:#?}", e),
     }
   }
   Ok(())
