@@ -21,7 +21,7 @@ use argh::FromArgs;
 // type Result<T = (), E = anyhow::Error> = anyhow::Result<T, E>;
 type Result<T = (), E = Box<dyn std::error::Error>> = std::result::Result<T, E>;
 
-/// rmfm
+/// rmrf
 #[derive(Debug, FromArgs)]
 struct Cli {
   /// whether to perform a normal delete operation when the operation to trash a file or folder fails
