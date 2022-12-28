@@ -21,7 +21,9 @@ use argh::FromArgs;
 // type Result<T = (), E = anyhow::Error> = anyhow::Result<T, E>;
 type Result<T = (), E = Box<dyn std::error::Error>> = std::result::Result<T, E>;
 
-/// rmrf
+/// A simple `rm -rf` command alternative.
+/// This command moves directories and files to the trash instead of deleting them.
+/// The path passed as an argument can be a file or a folder, and multiple arguments can be passed.
 #[derive(Debug, FromArgs)]
 struct Cli {
   /// whether to perform a normal delete operation when the operation to trash a file or folder fails
